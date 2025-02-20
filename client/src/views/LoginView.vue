@@ -20,7 +20,7 @@
           type="password"
           name="password"
         />
-        <router-link class="mt-5" to="/home">
+        <router-link class="mt-7" to="/home">
           <a
             class="text-black bg-orange-300 p-2 rounded-md cursor-pointer"
             to="/home"

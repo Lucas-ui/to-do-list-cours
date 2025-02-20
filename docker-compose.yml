@@ -32,11 +32,20 @@ services:
     command: sh -c "npm install && npm run dev"
     volumes:
       - ./client:/client
-    environment:
-      - VITE_API_URL=http://localhost:5000
     networks:
       - todolist-network
-    stop_grace_period: 1s
+
+  api:
+    image: maven:3.9.6-eclipse-temurin-17
+    container_name: Todo-api
+    ports:
+      - "5000:5000"
+    working_dir: /api
+    command: sh -c "mvn clean package && mvn spring-boot:run"
+    volumes:
+      - ./api:/api
+    networks:
+      - todolist-network
 
 networks:
   todolist-network:
