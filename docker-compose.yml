@@ -1,0 +1,46 @@
+services:
+  mysql:
+    container_name: Todo-mysql
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - todolist-network
+
+  phpmyadmin:
+    container_name: Todo-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8181:80"
+    environment:
+      PMA_HOST: Todo-mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    networks:
+      - todolist-network
+
+  client:
+    build: ./client
+    container_name: Todo-client
+    ports:
+      - "5173:5173"
+    working_dir: /client
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - ./client:/client
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    networks:
+      - todolist-network
+    stop_grace_period: 1s
+
+networks:
+  todolist-network:
+    driver: bridge
+
+volumes:
+  db-data: {}
